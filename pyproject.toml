@@ -1,7 +1,7 @@
 [project]
 name = "gemeni-cli-agent"
 version = "0.1.0"
-description = "Add your description here"
+description = "Simple agentic code editor in Python, similar to Claude Code or Cursor's Agent Mode.  It uses the Google Gemini API for an LLM-powered CLI code agent."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

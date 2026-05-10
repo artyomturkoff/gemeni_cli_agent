@@ -3,6 +3,8 @@ import argparse
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from promts import system_prompt
+from functions.call_function import available_functions
 
 
 
@@ -21,7 +23,10 @@ def main():
 
     response = client.models.generate_content(
         model='gemini-2.5-flash', 
-        contents=messages
+        contents=messages,
+        config=types.GenerateContentConfig(tools=[available_functions],
+                                            system_instruction=system_prompt, 
+                                            temperature=0),
         )
     if not response.usage_metadata:
         raise RuntimeError("No response metadata")
@@ -31,8 +36,14 @@ def main():
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
     
-    print(f"Response:")
-    print(f"{response.text}")
+
+    if not response.function_calls:
+        print("Response:")
+        print(response.text)
+        return
+
+    for function_call in response.function_calls:
+        print(f"Calling function: {function_call.name}({function_call.args})")
 
 
 

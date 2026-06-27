@@ -2,9 +2,11 @@ import argparse
 import os
 import sys
 
+
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+
 
 from functions.call_function import available_functions, call_function
 from config import MAX_ITERS
